@@ -1,0 +1,35 @@
+{
+  "name": "eventfuler",
+  "version": "1.0.0",
+  "description": "Online Ticketing Platform",
+  "license": "GPL-3.0-only",
+  "author": "Ruki",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "dev": "nodemon ."
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "log4js": "^6.9.1",
+    "morgan": "^1.10.1",
+    "pg": "^8.21.0",
+    "pg-hstore": "^2.3.4",
+    "qrcode": "^1.5.4",
+    "sequelize": "^6.37.8",
+    "sequelize-cli": "^6.6.5"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
