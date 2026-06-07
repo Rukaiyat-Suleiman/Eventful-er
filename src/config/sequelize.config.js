@@ -2,9 +2,15 @@ const Sequelize = require("sequelize");
 const { logger } = require("./logger.config.js");
 
 const dbUri = process.env.NODE_ENV === 'test' ? process.env.DB_URI_TEST : process.env.DB_URI;
-const sequelize = new Sequelize (dbUri, {
+const sequelize = new Sequelize(dbUri, {
     dialect: "postgres",
     logging: (msg) => logger.debug("Sequelize: " + msg),
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    },
     pool: {
         max: 5,
         min: 0,

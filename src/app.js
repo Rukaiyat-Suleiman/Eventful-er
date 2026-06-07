@@ -12,6 +12,7 @@ const viewRouter = require("./modules/views/views.routes.js");
 const paymentRouter = require("./modules/payments/payments.routes.js");
 const usersRouter = require("./modules/users/users.routes.js");
 const checkDBConnection = require("./utils/db-check.js");
+const { startReminderJob } = require("./jobs/reminder.job.js");
 
 const PORT = process.env.PORT || 3000;
 
@@ -60,7 +61,8 @@ app.use(errorHandler);
 if (!process.env.JEST_WORKER_ID) {
     app.listen(PORT, async () => {
         try {
-            await checkDBConnection()
+            await checkDBConnection();
+            startReminderJob();
             logger.info(`Listening on http://localhost:${PORT}`);
         } catch (err) {
             logger.info (`Server failed to startup: \n${err}`)

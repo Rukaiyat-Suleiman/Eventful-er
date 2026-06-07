@@ -53,6 +53,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     region: {
       type: DataTypes.STRING
+    },
+    reminderSentAt: {
+      type: DataTypes.DATE
     }
   }, {
     sequelize,

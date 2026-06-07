@@ -152,6 +152,62 @@
             opacity: 0.9;
         }
 
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .analytics-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #edf2f7;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .analytics-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+        }
+
+        .analytics-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .icon-blue { background-color: #e3f2fd; color: #1e88e5; }
+        .icon-green { background-color: #e8f5e9; color: #43a047; }
+        .icon-purple { background-color: #f3e5f5; color: #8e24aa; }
+        .icon-orange { background-color: #fff3e0; color: #fb8c00; }
+
+        .analytics-info h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #1d3557;
+            font-weight: 700;
+        }
+
+        .analytics-info p {
+            margin: 5px 0 0 0;
+            color: #718096;
+            font-size: 14px;
+            font-weight: 500;
+        }
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
         .open-modal-btn {
             background-color: #f1faee;
             color: #1d3557;
@@ -415,6 +471,25 @@
         .close-modal-btn:hover {
             background-color: #f1f5f9;
         }
+
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+                text-align: center;
+            }
+
+            .nav-brand {
+                font-size: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px 18px;
+            }
+        }
     </style>
 </head>
 
@@ -478,6 +553,39 @@
             </div>
             <% } %>
         </div>
+
+        <% if (user.role === 'host' && typeof analytics !== 'undefined') { %>
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <div class="analytics-icon icon-blue">📅</div>
+                <div class="analytics-info">
+                    <h3><%= analytics.totalEvents %></h3>
+                    <p>Total Events</p>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-icon icon-green">🎟️</div>
+                <div class="analytics-info">
+                    <h3><%= analytics.totalTicketsSold %></h3>
+                    <p>Tickets Sold</p>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-icon icon-purple">👥</div>
+                <div class="analytics-info">
+                    <h3><%= analytics.totalCheckins %></h3>
+                    <p>Verified Check-ins</p>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-icon icon-orange">💰</div>
+                <div class="analytics-info">
+                    <h3>₦<%= analytics.totalRevenue.toLocaleString() %></h3>
+                    <p>Estimated Revenue</p>
+                </div>
+            </div>
+        </div>
+        <% } %>
 
         <div class="dashboard-grid">
             <!-- Left Side: User Created Events or My Tickets -->
