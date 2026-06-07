@@ -43,6 +43,9 @@ jobs:
           NODE_ENV: test
           DB_URI_TEST: postgresql://postgres:password@localhost:5432/eventfuler_test
           PORT: 2000
+          JWT_SECRET: fallback_secret
+          JWT_REFRESH_SECRET: fallback_refresh_secret
+          PAYSTACK_SK: sk_test_placeholder
         run: |
           npx sequelize-cli db:migrate
           npm test
