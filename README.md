@@ -13,8 +13,8 @@ Here is a breakdown of the requirements and what has been built:
 | **Authentication & Authorization** | **Completed** | Roles configured as `host` and `attendee`. Dynamic login/signup controls and middleware-protected view routes (dashboard, profile, events management). |
 | **QR Code Generation** | **Completed** | Generates a unique, high-resolution QR code dynamically when an attendee successfully completes a Paystack transaction. QR codes contain ticket verification tokens. |
 | **Shareability** | **In Progress** | Social media sharing metadata exists on individual event detail pages, but direct UI quick-share buttons (e.g., share to Twitter/Facebook) can be further integrated. |
-| **Notifications** | **Planned** | Needs a database model for scheduled alerts and email integrations (via Nodemailer) triggered by a `node-cron` background worker to send reminders to attendees. |
-| **Analytics** | **Planned** | Need to build a visual analytics dashboard showing total all-time tickets sold, attendee counts, and scanning verification ratios (currently tracked in DB, but not summarized on the UI). |
+| **Notifications** | **Completed (Mocked)** | A `node-cron` background worker runs hourly to schedule reminders 24 hours before events. Note: Actual email delivery is mocked in console logs because we lack a verified domain, which is a strict requirement for SMTP providers like Mailtrap. |
+| **Analytics** | **Completed** | Built a visual analytics dashboard showing total all-time tickets sold, check-ins, and estimated revenue directly on the host's dashboard. |
 | **Payment (Paystack)** | **Completed** | Built initialization and webhook handlers under `src/modules/payments/` with verified transaction state tracking. |
 | **TypeScript Migration** | **Planned** | Currently built using robust vanilla ES6 JavaScript. Can be refactored to TypeScript using standard `tsconfig` and type definitions. |
 | **Cache Layer** | **Planned** | Currently hits Postgres directly via Sequelize ORM. Need to add a Redis-based cache layer to improve performance for high-traffic event reads. |

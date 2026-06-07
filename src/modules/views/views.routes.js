@@ -28,14 +28,26 @@ router.get("/dashboard", verifyToken, async (req, res, next) => {
     try {
         let events = [];
         let tickets = [];
+        let analytics = {
+            totalEvents: 0,
+            totalTicketsSold: 0,
+            totalCheckins: 0,
+            totalRevenue: 0
+        };
         if (req.user.role === 'host') {
             events = await Event.findAll({ where: { userId: req.user.id } });
+            analytics.totalEvents = events.length;
+            events.forEach(e => {
+                analytics.totalTicketsSold += e.totalRespondent || 0;
+                analytics.totalCheckins += e.totalAttended || 0;
+                analytics.totalRevenue += (e.totalRespondent || 0) * (e.price || 0);
+            });
         } else if (req.user.role === 'attendee') {
             const payments = await Payment.findAll({ where: { userId: req.user.id, paymentState: 'success' } });
             const eventIds = payments.map(p => p.eventId);
             tickets = await Event.findAll({ where: { id: eventIds } });
         }
-        res.render("dashboard", { user: req.user, events, tickets });
+        res.render("dashboard", { user: req.user, events, tickets, analytics });
     } catch (err) {
         next(err);
     }

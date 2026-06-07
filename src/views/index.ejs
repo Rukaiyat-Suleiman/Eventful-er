@@ -332,7 +332,20 @@
             }
 
             .nav-bar {
+                flex-direction: column;
+                gap: 15px;
                 padding: 15px 20px;
+                text-align: center;
+            }
+
+            .nav-brand {
+                font-size: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px 18px;
             }
         }
     </style>
@@ -511,18 +524,17 @@
                             <td style="padding: 16px; font-weight: 600; color: var(--primary);">Notifications &
                                 Reminders</td>
                             <td style="padding: 16px;"><span
-                                    style="background-color: #fff1f2; color: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">PLANNED</span>
+                                    style="background-color: #f1faee; color: #1d3557; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">MOCKED</span>
                             </td>
-                            <td style="padding: 16px; color: var(--text-muted);">Configure automatic email reminders
-                                using node-cron and nodemailer schedules.</td>
+                            <td style="padding: 16px; color: var(--text-muted);">Automatic email reminders
+                                are scheduled via node-cron. <strong>Note:</strong> Actual email delivery is mocked in the console logs due to the lack of a verified domain required by SMTP providers like Mailtrap.</td>
                         </tr>
                         <tr style="border-bottom: 1px solid #edf2f7;">
                             <td style="padding: 16px; font-weight: 600; color: var(--primary);">Creator Analytics</td>
                             <td style="padding: 16px;"><span
-                                    style="background-color: #fff1f2; color: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">PLANNED</span>
+                                    style="background-color: #f1faee; color: #1d3557; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">ACTIVE</span>
                             </td>
-                            <td style="padding: 16px; color: var(--text-muted);">Detailed charts for creator revenue,
-                                ticket purchase metrics, and scan ratios.</td>
+                            <td style="padding: 16px; color: var(--text-muted);">Dashboard metrics showing aggregated data for tickets sold, check-ins, and estimated revenue.</td>
                         </tr>
                     </tbody>
                 </table>

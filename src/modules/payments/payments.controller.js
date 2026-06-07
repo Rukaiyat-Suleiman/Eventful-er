@@ -17,6 +17,10 @@ const initializePayment = async (req, res) => {
             return sendResponse(res, 404, false, "Event not found");
         }
 
+        if (event.userId === user.id) {
+            return sendResponse(res, 403, false, "You cannot purchase tickets for an event you are hosting");
+        }
+
         if (!event.price || event.price <= 0) {
             return sendResponse(res, 400, false, "This event is free or has no price set");
         }

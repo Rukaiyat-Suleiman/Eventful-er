@@ -417,6 +417,45 @@
         .submit-btn:hover {
             background-color: #457b9d;
         }
+
+        .copy-link-btn {
+            background-color: #f1f5f9;
+            color: #457b9d;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-link-btn:hover {
+            background-color: #e2e8f0;
+            color: #1d3557;
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+                text-align: center;
+            }
+
+            .nav-brand {
+                font-size: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px 18px;
+            }
+        }
     </style>
 </head>
 
@@ -482,12 +521,18 @@
 
         <div class="event-detail-card">
             <div class="header-actions">
-                <div>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                     <% if (event.isListed) { %>
                         <span class="status-badge listed">Public Event</span>
                         <% } else { %>
                             <span class="status-badge unlisted">Private Event</span>
                             <% } %>
+                    <button class="copy-link-btn" onclick="copyEventLink('<%= event.id %>')">
+                        <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                        </svg>
+                        Copy Link
+                    </button>
                 </div>
 
                 <% if (user && user.id===event.userId) { %>
@@ -564,10 +609,34 @@
                                     </span>
                                 </div>
                             </div>
+                            </div>
                             <% } %>
             </div>
 
-            <% if (user && user.role==='attendee' && event.price> 0) { %>
+            <% if (user && user.id === event.userId) { %>
+                <div class="meta-grid" style="background-color: #f1faee; border-color: #d1e8d5; margin-top: -15px; margin-bottom: 30px;">
+                    <div class="meta-card">
+                        <svg class="meta-icon-svg" style="color: #2b2d42;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <div class="meta-info">
+                            <span class="meta-label">Tickets Sold</span>
+                            <span class="meta-value"><%= event.totalRespondent || 0 %></span>
+                        </div>
+                    </div>
+                    <div class="meta-card">
+                        <svg class="meta-icon-svg" style="color: #385723;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div class="meta-info">
+                            <span class="meta-label">Verified Check-ins</span>
+                            <span class="meta-value"><%= event.totalAttended || 0 %></span>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+
+            <% if (user && user.role === 'attendee' && user.id !== event.userId && event.price > 0) { %>
                 <div
                     style="margin-bottom: 30px; padding: 20px; background-color: #f0f4f8; border-radius: 12px; border: 1px solid #d9e2ec; text-align: center;">
                     <% if (payment && payment.paymentState==='success' && qrCodeDataUri) { %>
@@ -655,6 +724,25 @@
                 function closeEditModal() {
                     const modal = document.getElementById('editModal');
                     if (modal) modal.classList.remove('active');
+                }
+
+                function copyEventLink(eventId) {
+                    const url = window.location.origin + '/events/' + eventId;
+                    navigator.clipboard.writeText(url).then(() => {
+                        const btn = event.currentTarget || document.activeElement;
+                        const originalText = btn.innerHTML;
+                        btn.innerHTML = `
+                            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Copied!
+                        `;
+                        setTimeout(() => {
+                            btn.innerHTML = originalText;
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy link: ', err);
+                    });
                 }
             </script>
 </body>
