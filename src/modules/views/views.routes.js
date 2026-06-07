@@ -5,8 +5,8 @@ const QRCode = require('qrcode');
 
 const router = Router();
 
-router.get("/", (req, res) => {
-    res.render("index");
+router.get("/", optionalToken, (req, res) => {
+    res.render("index", { user: req.user || null });
 });
 
 router.get("/login", (req, res) => {

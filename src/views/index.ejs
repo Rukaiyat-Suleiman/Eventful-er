@@ -1,12 +1,566 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eventful-er</title>
+    <title>Eventful-er - Discover & Manage Seamless Events</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1d3557;
+            --primary-light: #457b9d;
+            --accent: #e63946;
+            --accent-hover: #c1121f;
+            --bg-light: #f8f9fa;
+            --text-dark: #2b2d42;
+            --text-muted: #6c757d;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Navbar Styling */
+        .nav-bar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-light);
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.2s ease, border-bottom 0.2s ease;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .nav-btn {
+            background-color: var(--primary);
+            color: white !important;
+            padding: 8px 20px !important;
+            border-radius: 8px;
+            border-bottom: none !important;
+            transition: background-color 0.2s ease, transform 0.1s ease !important;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        .logout-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #1d3557 0%, #11223f 100%);
+            color: white;
+            padding: 100px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(69, 123, 157, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(230, 57, 70, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-tag {
+            background-color: rgba(230, 57, 70, 0.2);
+            color: #ff8b94;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin: 0 0 24px 0;
+            letter-spacing: -1px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(90deg, #ff8b94, #a8dadc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #cbd5e1;
+            margin: 0 auto 40px auto;
+            max-width: 700px;
+        }
+
+        .hero-ctas {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            color: var(--primary);
+            margin: 0 0 16px 0;
+            font-weight: 800;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #edf2f7;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-icon-wrapper {
+            width: 56px;
+            height: 56px;
+            background-color: #f1faee;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--primary-light);
+        }
+
+        .feature-card.host .feature-icon-wrapper {
+            background-color: #f1faee;
+            color: var(--primary-light);
+        }
+
+        .feature-card.attendee .feature-icon-wrapper {
+            background-color: rgba(230, 57, 70, 0.08);
+            color: var(--accent);
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            color: var(--primary);
+            margin: 0 0 12px 0;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #edf2f7;
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .hero-desc {
+                font-size: 16px;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            .nav-bar {
+                padding: 15px 20px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Welcome to Eventful-er</h1>
-    <p><a href="/login">Login</a> | <a href="/signup">Sign Up</a></p>
+
+    <!-- Nav Bar -->
+    <nav class="nav-bar">
+        <a href="/" class="nav-brand">Eventful-er</a>
+        <div class="nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="/events">Events</a>
+            <% if (user) { %>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/profile" class="profile-btn">
+                    <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Profile
+                </a>
+                <form action="/api/auth/logout" method="POST" style="display: inline;">
+                    <button type="submit" class="logout-btn">
+                        <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Logout
+                    </button>
+                </form>
+                <% } else { %>
+                    <a href="/login">Login</a>
+                    <a href="/signup" class="nav-btn">Sign Up</a>
+                    <% } %>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <span class="hero-tag">Online Ticketing Platform</span>
+            <h1 class="hero-title">Discover and Host <span>Your Events</span></h1>
+            <p class="hero-desc">Create events, list them for purchase, pay securely, and scan entry tickets seamlessly.
+                The ultimate solution for both organizers and attendees.</p>
+            <div class="hero-ctas">
+                <a href="/events" class="btn-primary">Explore Live Events</a>
+                <% if (user) { %>
+                    <a href="/dashboard" class="btn-secondary">Go to Dashboard</a>
+                    <% } else { %>
+                        <a href="/signup" class="btn-secondary">Get Started Free</a>
+                        <% } %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-header">
+            <h2 class="section-title">Built for Everyone</h2>
+            <p class="section-desc">Whether you are organizing a major festival or looking to secure entry to a local
+                concert, Eventful-er has you covered.</p>
+        </div>
+
+        <div class="features-grid">
+            <!-- Host Features -->
+            <div class="feature-card host">
+                <div class="feature-icon-wrapper">
+                    <svg style="width: 28px; height: 28px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h3>Organize & Create</h3>
+                <p>Set up listings with custom ticket prices, date/time, and specific regional locations. Keep absolute
+                    control over visibility.</p>
+            </div>
+
+            <div class="feature-card host">
+                <div class="feature-icon-wrapper">
+                    <svg style="width: 28px; height: 28px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                    </svg>
+                </div>
+                <h3>Secure QR Scanning</h3>
+                <p>Scan attendees' unique entry tickets directly. System enforces authorization checks so only the host
+                    can scan and verify entries.</p>
+            </div>
+
+            <!-- Attendee Features -->
+            <div class="feature-card attendee">
+                <div class="feature-icon-wrapper">
+                    <svg style="width: 28px; height: 28px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                </div>
+                <h3>Instant Checkout</h3>
+                <p>Purchase tickets securely via verified channels. Gain immediate access to your dashboard and tickets
+                    once payment completes.</p>
+            </div>
+
+            <div class="feature-card attendee">
+                <div class="feature-icon-wrapper">
+                    <svg style="width: 28px; height: 28px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                </div>
+                <h3>Dynamic Profile</h3>
+                <p>Manage your account settings, update your role, edit login details, or delete your data at any time
+                    from a single view.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Development Specs Section -->
+    <section class="features-section"
+        style="background-color: #ffffff; border-top: 1px solid #edf2f7; max-width: 100%; padding: 80px 40px; box-sizing: border-box;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="section-header">
+                <h2 class="section-title">Project Implementation Status</h2>
+                <p class="section-desc">Track which requirements of the Eventful Specification are already active and
+                    what is planned next.</p>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table
+                    style="width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; margin-top: 20px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #edf2f7; color: var(--primary);">
+                            <th style="padding: 12px 16px; font-weight: 700;">Feature</th>
+                            <th style="padding: 12px 16px; font-weight: 700;">Status</th>
+                            <th style="padding: 12px 16px; font-weight: 700;">Implementation Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #edf2f7;">
+                            <td style="padding: 16px; font-weight: 600; color: var(--primary);">Authentication & Roles
+                            </td>
+                            <td style="padding: 16px;"><span
+                                    style="background-color: #f1faee; color: #1d3557; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">ACTIVE</span>
+                            </td>
+                            <td style="padding: 16px; color: var(--text-muted);">Protected paths for Host and Attendee
+                                dashboards/profiles.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #edf2f7;">
+                            <td style="padding: 16px; font-weight: 600; color: var(--primary);">QR Ticket Generation
+                            </td>
+                            <td style="padding: 16px;"><span
+                                    style="background-color: #f1faee; color: #1d3557; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">ACTIVE</span>
+                            </td>
+                            <td style="padding: 16px; color: var(--text-muted);">Unique QR code tickets created upon
+                                successful Paystack webhook verification.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #edf2f7;">
+                            <td style="padding: 16px; font-weight: 600; color: var(--primary);">Payment Integration</td>
+                            <td style="padding: 16px;"><span
+                                    style="background-color: #f1faee; color: #1d3557; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">ACTIVE</span>
+                            </td>
+                            <td style="padding: 16px; color: var(--text-muted);">Fully integrated with Paystack SDK for
+                                secure payment initializations.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #edf2f7;">
+                            <td style="padding: 16px; font-weight: 600; color: var(--primary);">API Documentation</td>
+                            <td style="padding: 16px;"><span
+                                    style="background-color: #f1faee; color: #1d3557; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">ACTIVE</span>
+                            </td>
+                            <td style="padding: 16px; color: var(--text-muted);">Fully documented REST API endpoints
+                                using interactive Swagger docs on <a href="/api-docs"
+                                    style="color: var(--primary-light); text-decoration: none; font-weight: 600;">/api-docs</a>.
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #edf2f7;">
+                            <td style="padding: 16px; font-weight: 600; color: var(--primary);">Notifications &
+                                Reminders</td>
+                            <td style="padding: 16px;"><span
+                                    style="background-color: #fff1f2; color: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">PLANNED</span>
+                            </td>
+                            <td style="padding: 16px; color: var(--text-muted);">Configure automatic email reminders
+                                using node-cron and nodemailer schedules.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #edf2f7;">
+                            <td style="padding: 16px; font-weight: 600; color: var(--primary);">Creator Analytics</td>
+                            <td style="padding: 16px;"><span
+                                    style="background-color: #fff1f2; color: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;">PLANNED</span>
+                            </td>
+                            <td style="padding: 16px; color: var(--text-muted);">Detailed charts for creator revenue,
+                                ticket purchase metrics, and scan ratios.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div
+            style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; font-family: 'Inter', sans-serif;">
+            <p style="margin: 0;">&copy; 2026 Eventful-er. All rights reserved.</p>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span>Made with 📨 by <strong>Ruki</strong></span>
+                <a href="https://github.com/Rukaiyat-Suleiman/Eventful-er" target="_blank"
+                    style="color: var(--primary); display: inline-flex; align-items: center; text-decoration: none; font-weight: 700; gap: 6px; transition: color 0.2s ease;">
+                    <svg style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z" />
+                    </svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating GitHub Badge -->
+    <a href="https://github.com/Rukaiyat-Suleiman/Eventful-er" target="_blank"
+        style="position: fixed; bottom: 20px; right: 20px; background-color: var(--primary); color: white; padding: 10px 16px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; z-index: 1000; transition: transform 0.2s ease, background-color 0.2s ease;"
+        onmouseover="this.style.transform='translateY(-2px)'; this.style.backgroundColor='var(--primary-light)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.backgroundColor='var(--primary)';">
+        <svg style="width: 18px; height: 18px;" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z" />
+        </svg>
+        <span>Made by Ruki</span>
+    </a>
+
 </body>
+
 </html>
