@@ -1,28 +1,32 @@
 require('dotenv/config');
 
-const sslConfig = {
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
+const getSSLConfig = (url) => {
+    if (!url) return {};
+    const useSSL = url.includes('sslmode=require') || (!url.includes('localhost') && !url.includes('127.0.0.1'));
+    return useSSL ? {
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
         }
-    }
+    } : {};
 };
 
 module.exports = {
     development: {
         url: process.env.DB_URI,
         dialect: 'postgres',
-        ...sslConfig
+        ...getSSLConfig(process.env.DB_URI)
     },
     production: {
         url: process.env.DB_URI_PROD,
         dialect: 'postgres',
-        ...sslConfig
+        ...getSSLConfig(process.env.DB_URI_PROD)
     },
     test: {
         url: process.env.DB_URI_TEST,
         dialect: 'postgres',
-        ...sslConfig
+        ...getSSLConfig(process.env.DB_URI_TEST)
     }
 };
