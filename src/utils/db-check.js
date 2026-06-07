@@ -1,5 +1,5 @@
-import { sequelize } from "../config/sequelize.config.js";
-import { logger } from "./logger.config.js"
+const { sequelize } = require("../config/sequelize.config.js");
+const { logger } = require("../config/logger.config.js");
 
 async function checkDBConnection() {
     try {
@@ -11,4 +11,4 @@ async function checkDBConnection() {
     }
 }
 
-export default checkDBConnection
+module.exports = checkDBConnection;

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - Eventful-er</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fc;
+            color: #2b2d42;
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            background-color: #e63946;
+            color: white;
+            padding: 10px 0;
+            box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .marquee-content {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .marquee-icon {
+            width: 16px;
+            height: 16px;
+            margin: 0 6px 0 15px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .nav-bar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1d3557;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #457b9d;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.2s ease, border-bottom 0.2s ease;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #1d3557;
+            border-bottom: 2px solid #1d3557;
+        }
+
+        .logout-btn {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logout-btn:hover {
+            background-color: #c1121f;
+            transform: translateY(-1px);
+        }
+
+        .profile-btn {
+            text-decoration: none;
+            color: #457b9d;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.2s ease, border-bottom 0.2s ease;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .profile-btn:hover, .profile-btn.active {
+            color: #1d3557;
+            border-bottom: 2px solid #1d3557;
+        }
+
+        .login-btn {
+            background-color: #1d3557;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+
+        .login-btn:hover {
+            background-color: #457b9d;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: #1d3557;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .event-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .event-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1d3557;
+            margin: 0 0 12px 0;
+        }
+
+        .event-desc {
+            font-size: 15px;
+            color: #4a5568;
+            margin: 0 0 20px 0;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .event-meta {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            color: #457b9d;
+        }
+
+        .view-details-btn {
+            background-color: #457b9d;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 10px 0;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+            display: block;
+        }
+
+        .view-details-btn:hover {
+            background-color: #1d3557;
+        }
+
+        .no-events {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            grid-column: 1 / -1;
+        }
+
+        .no-events h3 {
+            margin: 0 0 10px 0;
+            color: #4a5568;
+        }
+
+        .no-events p {
+            margin: 0;
+            color: #718096;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <svg class="marquee-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            THIS IS A FUNCTIONAL SHOWCASE, NOT AN ACTUAL APPLICATION. PURCHASES WILL REMAIN IN TEST MODE.
+            
+            <svg class="marquee-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m0 0a2 2 0 01-2 2m0-4a2 2 0 01-2-2m0 2a2 2 0 00-2 2m0 0a2 2 0 01-2 2m0 0a2 2 0 012 2m0 0V20m0 0h4m-4 0H9" />
+            </svg>
+            Demo Host: john@example.com (password123)
+            
+            <svg class="marquee-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m0 0a2 2 0 01-2 2m0-4a2 2 0 01-2-2m0 2a2 2 0 00-2 2m0 0a2 2 0 01-2 2m0 0a2 2 0 012 2m0 0V20m0 0h4m-4 0H9" />
+            </svg>
+            Demo Attendee: jane@example.com (password123)
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <div class="nav-brand">Eventful-er</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/events" class="active">Events</a>
+            <% if (user) { %>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/profile" class="profile-btn">
+                    <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Profile
+                </a>
+                <form action="/api/auth/logout" method="POST" style="display: inline;">
+                    <button type="submit" class="logout-btn">
+                        <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Logout
+                    </button>
+                </form>
+            <% } else { %>
+                <a href="/login" class="login-btn">Login</a>
+            <% } %>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <h1>All Available Events</h1>
+
+        <div class="events-grid">
+            <% if (events && events.length > 0) { %>
+                <% events.forEach(event => { %>
+                    <div class="event-card">
+                        <div>
+                            <h2 class="event-title"><%= event.eventName %></h2>
+                            <p class="event-desc">
+                                <%= event.eventDesc ? event.eventDesc : 'No description provided.' %>
+                            </p>
+                        </div>
+                        <div>
+                            <div class="event-meta">
+                                <div class="meta-item">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span><%= event.eventDate %></span>
+                                </div>
+                                <% if (event.eventTime) { %>
+                                    <div class="meta-item">
+                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span><%= event.eventTime %></span>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <a href="/events/<%= event.id %>" class="view-details-btn">View Event Details</a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="no-events">
+                    <h3>No Events Found</h3>
+                    <p>There are no active events at the moment. Please check back later!</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+
+</html>
